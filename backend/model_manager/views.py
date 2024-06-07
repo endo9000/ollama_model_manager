@@ -7,7 +7,6 @@ from django.shortcuts import render
 
 BASE_URL = "http://localhost:11434"
 
-
 def index(request):
     """Render the index page with a list of models"""
     models = get_model_list()

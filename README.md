@@ -18,13 +18,13 @@ open [127.0.0.1:8000](127.0.0.1:8000) in your browser.
 - edit duplicate
 - delete model
 - darkreader compatibility (extension)
+- themes (darkmode)
 
 ### In Progress
 - notifications 
 
 ### Potential Features
 - menu bar
-- themes (darkmode)
 - docker
 - native desktop app
 - search bar with ollama library integration

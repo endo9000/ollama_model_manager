@@ -14,48 +14,29 @@ document.addEventListener("alpine:init", () => {
     ollamaRunning: false,
 
     convertParamsToNumeric(param) {
-      if (!param) return 0;
+      const units = { M: 1000000, B: 1000000000, K: 1000 };
+      const value = parseFloat(param.slice(0, -1));
       const unit = param[param.length - 1];
-      let value = parseFloat(param.slice(0, -1));
-      switch (unit) {
-        case "M":
-          value *= 1000000;
-          break;
-        case "B":
-          value *= 1000000000;
-          break;
-        case "K":
-          value *= 1000;
-          break;
-        default:
-          console.log("Could not process parameter size:", param);
-          return 0;
-      }
-      return Math.floor(value);
+      return value * (units[unit] || 1);
     },
 
     formatDate(dateString) {
       const date = new Date(dateString);
       const now = new Date();
       const ago = Math.floor((now - date) / (1000 * 3600 * 24));
-      let formattedDate = date.toLocaleDateString();
-      if (ago === 0) {
-        formattedDate += " (today)";
-      } else if (ago === 1) {
-        formattedDate += ` (1 day ago)`;
-      } else {
-        formattedDate += ` (${ago} days ago)`;
-      }
-      return formattedDate;
+      return `${date.toLocaleDateString()}${ago === 0 ? " (today)" : ago === 1 ? " (1 day ago)" : ` (${ago} days ago)`}`;
     },
 
     formatSize(size) {
       const bytes = parseInt(size);
-      const mbSize = bytes / (1024 * 1024);
+      const kbSize = bytes / 1024;
+      const mbSize = kbSize / 1024;
       const gbSize = mbSize / 1024;
-      return gbSize >= 1
-        ? `${gbSize.toFixed(2)} GB`
-        : `${mbSize.toFixed(2)} MB`;
+      if (gbSize >= 1.5) {
+        return `${gbSize.toFixed(2)} GB`;
+      } else if (mbSize >= 1) {
+        return `${mbSize.toFixed(2)} MB`;
+      } 
     },
 
     sort(by) {
@@ -84,8 +65,7 @@ document.addEventListener("alpine:init", () => {
           break;
       }
       this.sortDirection = -this.sortDirection;
-    }
-    ,
+    },
 
     getStatus() {
       fetch(`get-status/`, {

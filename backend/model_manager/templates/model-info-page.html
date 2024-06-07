@@ -1,73 +1,70 @@
 {% load static %}
 
-<div class="px-2 bg-gray-100">
+<div class="px-2">
     <div class="flex flex-wrap">
-        <div class="flex flex-wrap justify-between w-1/2 mb-2 pl-2 py-1 md:w-1/2 xl:w-1/3 hover:bg-gray-200 rounded cursor-pointer group" @click="navigator.clipboard.writeText(model.model)">
+        <div class="flex justify-between w-1/2 md:w-1/3 mb-2 pl-2 py-1 transition duration-200 hover:bg-base-300 rounded cursor-pointer group" 
+            @click="navigator.clipboard.writeText(model.model)">
             <div>
-                <div class="text-sm text-gray-400">Model Name:</div>
-                <div class="text-black text-lg" x-text="model.model"></div>
+                <div class="text-sm">Model Name:</div>
+                <div class="line-clamp-2 font-medium" x-text="model.model"></div>
             </div>
-            <div class="flex justify-center items-center opacity-0 group-hover:opacity-30">
-                <img class="w-5 h-5 mr-2" 
-                    :class="{ 'invert': document.documentElement.getAttribute('data-darkreader-scheme') === 'dark' }"
-                    src="{% static 'icons/clipboard.svg' %}" title="Copy to Clipboard" alt="Copy to Clipboard">
+            <div class="p-2 flex justify-center items-center opacity-0 group-hover:opacity-100 transition duration-200">
+                <i class="fa-regular fa-clipboard"></i>
             </div>
         </div>
-        <div class="flex flex-wrap justify-between w-1/2 mb-2 pl-2 py-1 md:w-1/2 xl:w-1/3 hover:bg-gray-200 rounded cursor-pointer group" @click="navigator.clipboard.writeText(model.details.parameter_size)">
+        
+        <div class="flex justify-between w-1/2 md:w-1/3 mb-2 pl-2 py-1 transition duration-200 hover:bg-base-300 rounded cursor-pointer group" 
+            @click="navigator.clipboard.writeText(model.details.parameter_size)">
             <div>
-                <div class="text-sm text-gray-400">Parameter Size:</div>
-                <div class="text-black text-lg" x-text="model.details.parameter_size"></div>
+                <div class="text-sm">Parameter Size:</div>
+                <div class="line-clamp-1 font-medium" x-text="model.details.parameter_size"></div>
             </div>
-            <div class="flex justify-center items-center opacity-0 group-hover:opacity-30">
-                <img class="w-5 h-5 mr-2" 
-                    :class="{ 'invert': document.documentElement.getAttribute('data-darkreader-scheme') === 'dark' }"
-                    src="{% static 'icons/clipboard.svg' %}" title="Copy to Clipboard" alt="Copy to Clipboard">
-            </div>
-        </div>
-        <div class="flex flex-wrap justify-between w-1/2 mb-2 pl-2 py-1 md:w-1/2 xl:w-1/3 hover:bg-gray-200 rounded cursor-pointer group" @click="navigator.clipboard.writeText(formatSize(model.size))">
-            <div>
-                <div class="text-sm text-gray-400">File Size:</div>
-                <div class="text-black text-lg" x-text="formatSize(model.size)"></div>
-            </div>
-            <div class="flex justify-center items-center opacity-0 group-hover:opacity-30">
-                <img class="w-5 h-5 mr-2" 
-                    :class="{ 'invert': document.documentElement.getAttribute('data-darkreader-scheme') === 'dark' }"
-                    src="{% static 'icons/clipboard.svg' %}" title="Copy to Clipboard" alt="Copy to Clipboard">
-            </div>
-        </div>
-        <div class="flex flex-wrap justify-between w-1/2 mb-2 pl-2 py-1 md:w-1/2 xl:w-1/3 hover:bg-gray-200 rounded cursor-pointer group" @click="navigator.clipboard.writeText(model.details.quantization_level)">
-            <div>
-                <div class="text-sm text-gray-400">Quantization Level:</div>
-                <div class="text-black text-lg" x-text="model.details.quantization_level"></div>
-            </div>
-            <div class="flex justify-center items-center opacity-0 group-hover:opacity-30">
-                <img class="w-5 h-5 mr-2" 
-                    :class="{ 'invert': document.documentElement.getAttribute('data-darkreader-scheme') === 'dark' }"
-                    src="{% static 'icons/clipboard.svg' %}" title="Copy to Clipboard" alt="Copy to Clipboard">
+            <div class="p-2 flex justify-center items-center opacity-0 group-hover:opacity-100 transition duration-200">
+                <i class="fa-regular fa-clipboard"></i>
             </div>
         </div>
 
-        <div class="flex flex-wrap justify-between w-1/2 mb-2 pl-2 py-1 md:w-1/2 xl:w-1/3 hover:bg-gray-200 rounded cursor-pointer group" @click="navigator.clipboard.writeText(model.details.family)">
+        <div class="flex justify-between w-1/2 md:w-1/3 mb-2 pl-2 py-1 transition duration-200 hover:bg-base-300 rounded cursor-pointer group" 
+            @click="navigator.clipboard.writeText(formatSize(model.size))">
             <div>
-                <div class="text-sm text-gray-400">Model Family:</div>
-                <div class="text-black text-lg" x-text="model.details.family"></div>
+                <div class="text-sm">File Size:</div>
+                <div class="line-clamp-1 font-medium" x-text="formatSize(model.size)"></div>
             </div>
-            <div class="flex justify-center items-center opacity-0 group-hover:opacity-30">
-                <img class="w-5 h-5 mr-2" 
-                    :class="{ 'invert': document.documentElement.getAttribute('data-darkreader-scheme') === 'dark' }"
-                    src="{% static 'icons/clipboard.svg' %}" title="Copy to Clipboard" alt="Copy to Clipboard">
+            <div class="p-2 flex justify-center items-center opacity-0 group-hover:opacity-100 transition duration-200">
+                <i class="fa-regular fa-clipboard"></i>
             </div>
         </div>
 
-        <div class="flex flex-wrap justify-between w-1/2 mb-2 pl-2 py-1 md:w-1/2 xl:w-1/3 hover:bg-gray-200 rounded cursor-pointer group" @click="navigator.clipboard.writeText(formatDate(model.modified_at))">
+        <div class="flex justify-between w-1/2 md:w-1/3 mb-2 pl-2 py-1 transition duration-200 hover:bg-base-300 rounded cursor-pointer group" 
+            @click="navigator.clipboard.writeText(model.details.quantization_level)">
             <div>
-                <div class="text-sm text-gray-400">Last Modified:</div>
-                <div class="text-black text-lg" x-text="formatDate(model.modified_at)"></div>
+                <div class="text-sm">Quantization Level:</div>
+                <div class="line-clamp-1 font-medium" x-text="model.details.quantization_level"></div>
             </div>
-            <div class="flex justify-center items-center opacity-0 group-hover:opacity-30">
-                <img class="w-5 h-5 mr-2" 
-                    :class="{ 'invert': document.documentElement.getAttribute('data-darkreader-scheme') === 'dark' }"
-                    src="{% static 'icons/clipboard.svg' %}" title="Copy to Clipboard" alt="Copy to Clipboard">
+            <div class="p-2 flex justify-center items-center opacity-0 group-hover:opacity-100 transition duration-200">
+                <i class="fa-regular fa-clipboard"></i>
+            </div>
+        </div>
+
+        <div class="flex justify-between w-1/2 md:w-1/3 mb-2 pl-2 py-1 transition duration-200 hover:bg-base-300 rounded cursor-pointer group" 
+            @click="navigator.clipboard.writeText(model.details.family)">
+            <div>
+                <div class="text-sm">Model Family:</div>
+                <div class="line-clamp-1 font-medium" x-text="model.details.family"></div>
+            </div>
+            <div class="p-2 flex justify-center items-center opacity-0 group-hover:opacity-100 transition duration-200">
+                <i class="fa-regular fa-clipboard"></i>
+            </div>
+        </div>
+
+        <div class="flex justify-between w-1/2 md:w-1/3 mb-2 pl-2 py-1 transition duration-200 hover:bg-base-300 rounded cursor-pointer group" 
+            @click="navigator.clipboard.writeText(formatDate(model.modified_at))">
+            <div>
+                <div class="text-sm">Last Modified:</div>
+                <div class="line-clamp-1 font-medium" x-text="formatDate(model.modified_at)"></div>
+            </div>
+            <div class="p-2 flex justify-center items-center opacity-0 group-hover:opacity-100 transition duration-200">
+                <i class="fa-regular fa-clipboard"></i>
             </div>
         </div>
     </div>

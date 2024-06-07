@@ -1,109 +1,107 @@
 <!-- model-card.html -->
 {% load static %}
 <template x-for="model in modelList" :key="model.name">
-    <div class="transition duration-500 ease-in-out shadow-md rounded-xl hover:shadow-xl" x-bind:id="model.name">
-        <div x-cloak>
-            <div class="pt-2"
-                x-show="searchNeedle === '' || model.name.toLowerCase().includes(searchNeedle.toLowerCase()) || model.details.parameter_size === searchNeedle">
-                <div class="p-0 rounded-xl collapse">
-                    <input type="checkbox"  @click="fetchModelFile(model); selectedModel = model; model.isEditing = model.isRename = model.isDuplicate = model.isDelete = false; model.showInfoPage = true; model.showModelPage = false" />
-                    <div class="flex justify-between w-full bg-gray-100 collapse-title">
-                        <div class="text-2xl font-semibold text-black cursor-pointer"
-                            x-show="!model.isEditing"
-                            x-text="model.name">
-                        </div>
-                        <div>
-                            <div class="text-2xl font-semibold text-black" x-show="model.isRename">RENAME MODEL?</div>
-                            <div class="text-2xl font-semibold text-black" x-show="model.isDuplicate">COPY MODEL?</div>
-                            <div class="text-2xl font-semibold text-black" x-show="model.isDelete">DELETE MODEL?</div>
-                        </div>
-                    </div>
-                    <div class="p-0 !pb-0 bg-gray-100 collapse-content">
-                        <div class="flex justify-between w-full px-2 py-1 text-black border-t">
-                            <div>
-                        {% comment %} 2 BUTTONS {% endcomment %}
-                        <button class="w-8 h-8 px-1 rounded btn btn-ghost btn-sm"
-                                :class="{ 'btn-active': model.showInfoPage }"
-                                @click="model.showInfoPage = true; model.showModelPage = false">
-                            <img class="" :class="{ 'invert': document.documentElement.getAttribute('data-darkreader-scheme') === 'dark' }"
-                                src="{% static 'icons/info1.svg' %}" title="Infos" alt="info">
-                        </button>
-                        <button class="w-8 h-8 px-1 rounded btn btn-ghost btn-sm"
-                                :class="{ 'btn-active': model.showModelPage }"
-                                @click="model.showInfoPage = false; model.showModelPage = true">
-                            <img class="" :class="{ 'invert': document.documentElement.getAttribute('data-darkreader-scheme') === 'dark' }"
-                                src="{% static 'icons/file-text.svg' %}" title="Modelfile" alt="modelfile">
-                        </button>
-                        <button class="w-8 h-8 px-1 rounded btn btn-success btn-sm"
-                                @click="saveModelFile(model.name); model.showInfoPage = model.isModified = false; model.showModelPage = true"
-                                x-show="model.showModelPage && model.isModified">
-                            <img class="" src="{% static 'icons/save.svg' %}" title="Save" alt="accept">
-                        </button>
-                        <button class="w-8 h-8 px-1 rounded btn btn-error btn-sm"
-                                @click="resetModel(model.name, model.modelFile);model.showInfoPage = model.isModified = false; model.showModelPage = true "
-                                x-show="model.showModelPage && model.isModified">
-                            <img class="" src="{% static 'icons/cancel.svg' %}" title="Cancel" alt="cancel">
-                        </button>
-                        </div>
-                            <div class="flex">
-                                <input type="text" x-model="model.newName" :x-model="model.name" x-show="model.isRename || model.isDuplicate" class="mx-1 pl-1 !w-120 rounded input input-bordered input-sm bg-transparent"/>
-                                
-                                <div class="">
-                                    <button class="pl-1 w-8 h-8 px-1 rounded btn btn-ghost btn-sm" 
-                                            :class="{ 'invert': document.documentElement.getAttribute('data-darkreader-scheme') === 'dark' }"
-                                            @click="model.isEditing = model.isRename = true; model.isDuplicate = model.isDelete = false;" 
-                                            x-show="!model.isEditing">
-                                        <img src="{% static 'icons/edit.svg' %}" title="Rename Model" alt="rename">
-                                    </button>
-                                    <button class="pl-1 w-8 h-8 px-1 rounded btn btn-success btn-sm" @click="renameModel(model.name, model.newName); model.isEditing = model.isRename = false;" x-show="model.isRename">
-                                        <img src="{% static 'icons/edit.svg' %}" title="Confirm Rename" alt="confirm rename">
-                                    </button>
-                                </div>
-                                
-                                <div class="">
-                                    <button class="pl-1 w-8 h-8 px-1 rounded btn btn-ghost btn-sm" 
-                                            :class="{ 'invert': document.documentElement.getAttribute('data-darkreader-scheme') === 'dark' }"
-                                            @click="model.isEditing = model.isDuplicate = true; model.isRename = model.isDelete = false;" 
-                                            x-show="!model.isEditing">
-                                        <img src="{% static 'icons/file-plus.svg' %}" title="Duplicate Model" alt="duplicate">
-                                    </button>
-                                    <button class="pl-1 w-8 h-8 px-1 rounded btn btn-success btn-sm" @click="duplicateModel(model.name, model.newName); model.isEditing = model.isDuplicate = false;" x-show="model.isDuplicate">
-                                        <img src="{% static 'icons/file-plus.svg' %}" title="Confirm Duplicate" alt="confirm duplicate">
-                                    </button>
-                                </div>
-                                
-                                <div class="">
-                                    <button class="pl-1 w-8 h-8 px-1 rounded btn btn-ghost btn-sm" 
-                                            :class="{ 'invert': document.documentElement.getAttribute('data-darkreader-scheme') === 'dark' }"
-                                            @click="model.isEditing = model.isDelete = true; model.isRename = model.isDuplicate = false;" 
-                                            x-show="!model.isEditing">
-                                        <img src="{% static 'icons/file-minus.svg' %}" title="Delete Model" alt="delete">
-                                    </button>
-                                    <button class="pl-1 w-8 h-8 px-1 rounded btn btn-success btn-sm" @click="deleteModel(model.name); model.isDelete = false;" x-show="model.isDelete">
-                                        <img src="{% static 'icons/file-minus.svg' %}" title="Confirm Delete" alt="confirm delete">
-                                    </button>
-                                </div>
-                                
-                                <button class="ml-1 w-8 h-8 px-1 rounded btn btn-error btn-sm" @click="model.isEditing = model.isRename = model.isDuplicate = model.isDelete = false;" x-show="model.isEditing || model.isRename || model.isDuplicate || model.isDelete">
-                                    <img src="{% static 'icons/cancel.svg' %}" title="Cancel" alt="cancel">
-                                </button>
-                            </div>
-                            
-                        </div>
-                            <div>
-                                <div x-show="model.showInfoPage" class="w-full">
-                                    {% include 'model-info-page.html'%}
-                                </div>
-                            </div>
-                            <div>
-                                <div x-show="model.showModelPage" class="w-full">
-                                    {% include 'model-file-page.html'%}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="transition duration-200 shadow-md hover:shadow-xl rounded-xl" x-bind:id="model.name">
+		<div x-cloak>
+			<div class="my-2 ease-in-out border border-base-content rounded-xl"
+						x-show="searchNeedle === '' || model.name.toLowerCase().includes(searchNeedle.toLowerCase()) || model.details.parameter_size === searchNeedle">
+				<div class="p-0 rounded-xl collapse collapse-arrow">
+					<input type="checkbox"  @click="fetchModelFile(model); selectedModel = model; model.isEditing = model.isRename = model.isDuplicate = model.isDelete = false; model.showInfoPage = true; model.showModelPage = false" />
+					<div class="flex justify-between w-full collapse-title">
+							<div class="text-2xl font-semibold cursor-pointer"
+									x-show="!model.isEditing"
+									x-text="model.name">
+							</div>
+							<div class="text-2xl font-semibold" >
+									<div x-show="model.isRename">RENAME MODEL?</div>
+									<div x-show="model.isDuplicate">COPY MODEL?</div>
+									<div x-show="model.isDelete">DELETE MODEL?</div>
+							</div>
+					</div>
+					<div class="p-0 !pb-0 collapse-content">
+							<div class="flex justify-between w-full px-2 py-1">
+								<div>
+								{% comment %} 2 BUTTONS {% endcomment %}
+									<button class="w-8 h-8 px-1 rounded btn btn-sm tooltip tooltip-right" data-tip="Modelinfo"
+													:class="{ 'btn-active': model.showInfoPage }"
+													@click="model.showInfoPage = true; model.showModelPage = false">
+											<i class="text-base-content text-xl fa-regular fa-file" alt="model info"></i>
+									</button>
+									<button class="w-8 h-8 px-1 rounded btn btn-sm tooltip tooltip-right" data-tip="Modelfile"
+													:class="{ 'btn-active': model.showModelPage }"
+													@click="model.showInfoPage = false; model.showModelPage = true">
+											<i class="text-base-content text-xl fa-regular fa-file-lines" alt="modelfile"></i>
+									</button>
+									<button class="w-8 h-8 px-1 rounded btn btn-success btn-sm tooltip tooltip-right" data-tip="Save Modelfile"
+													@click="saveModelFile(model.name); model.showInfoPage = model.isModified = false; model.showModelPage = true"
+													x-show="model.showModelPage && model.isModified">
+											<i class="text-base-content text-xl fa-regular fa-floppy-disk" alt="save modelfile"></i>
+									</button>
+									<button class="w-8 h-8 px-1 rounded btn btn-error btn-sm tooltip tooltip-right" data-tip="Undo Modelfile"
+													@click="resetModel(model.name, model.modelFile);model.showInfoPage = model.isModified = false; model.showModelPage = true "
+													x-show="model.showModelPage && model.isModified">
+											<i class="text-base-content text-xl fa-regular fa-circle-xmark" alt="undo modelfile"></i>
+									</button>
+								</div>
+								<div class="flex">
+									<input type="text" x-model="model.newName" :x-model="model.name" x-show="model.isRename || model.isDuplicate" class="pl-1 !w-120 rounded input input-bordered input-sm bg-transparent"/>
+									
+										<div class="">
+											<button class="ml-1 w-8 h-8 px-1 rounded btn btn-sm tooltip tooltip-left" data-tip="Rename Model"
+															@click="model.isEditing = model.isRename = true; model.isDuplicate = model.isDelete = false;" 
+															x-show="!model.isEditing">
+												<i class="text-base-content text-xl fa-regular fa-pen-to-square" alt="rename model"></i>
+											</button>
+											<button class="ml-1 w-8 h-8 px-1 rounded btn btn-success btn-sm tooltip tooltip-left" data-tip="Confirm Rename"
+															@click="renameModel(model.name, model.newName); model.isEditing = model.isRename = false;" x-show="model.isRename">
+												<i class="text-base-content text-xl fa-regular fa-pen-to-square" alt="confirm rename"></i>
+											</button>
+										</div>
+								
+										<div class="">
+											<button class="ml-1 w-8 h-8 px-1 rounded btn btn-sm tooltip tooltip-left" data-tip="Duplicate Model"
+															@click="model.isEditing = model.isDuplicate = true; model.isRename = model.isDelete = false;" 
+															x-show="!model.isEditing">
+												<i class="text-base-content text-xl fa-regular fa-clone" alt="duplicate model"></i>
+											</button>
+											<button class="ml-1 w-8 h-8 px-1 rounded btn btn-success btn-sm tooltip tooltip-left" data-tip="Confirm Duplicate"
+															@click="duplicateModel(model.name, model.newName); model.isEditing = model.isDuplicate = false;" x-show="model.isDuplicate">
+												<i class="text-base-content text-xl fa-regular fa-clone" alt="confirm duplicate"></i>
+											</button>
+										</div>
+								
+										<div class="">
+											<button class="ml-1 w-8 h-8 px-1 rounded btn btn-sm tooltip tooltip-left" data-tip="Delete Model"
+															@click="model.isEditing = model.isDelete = true; model.isRename = model.isDuplicate = false;" 
+															x-show="!model.isEditing">
+												<i class="text-base-content text-xl fa-regular fa-square-minus" alt="delete model"></i>
+											</button>
+											<button class="ml-1 w-8 h-8 px-1 rounded btn btn-success btn-sm tooltip tooltip-left" data-tip="Confirm Delete"
+															@click="deleteModel(model.name); model.isDelete = false;" x-show="model.isDelete">
+												<i class="text-base-content text-xl fa-regular fa-square-minus" alt="confirm delete"></i>
+											</button>
+										</div>
+
+									<button class="ml-1 w-8 h-8 px-1 rounded btn btn-error btn-sm tooltip tooltip-left" data-tip="Cancel"
+													@click="model.isEditing = model.isRename = model.isDuplicate = model.isDelete = false;" x-show="model.isEditing || model.isRename || model.isDuplicate || model.isDelete">
+										<i class="text-base-content text-xl fa-regular fa-circle-xmark" alt="cancel"></i>
+									</button>
+								</div>
+							</div>
+							<div>
+								<div x-show="model.showInfoPage" class="w-full">
+										{% include 'model-info-page.html'%}
+								</div>
+							</div>
+							<div>
+								<div x-show="model.showModelPage" class="w-full">
+										{% include 'model-file-page.html'%}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </template>

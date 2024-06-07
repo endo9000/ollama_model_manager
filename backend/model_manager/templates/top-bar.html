@@ -1,42 +1,90 @@
 <div x-cloak>
     <div class="flex">
-        <div class="mr-1 w-full transition duration-500 ease-in-out shadow-md rounded-xl hover:shadow-xl">
-            <div x-data="" class="flex !outline-none items-center pl-4 text-black bg-gray-100 input rounded-xl">
+        <div class="mr-1 w-full transition duration-200 ease-in-out rounded-xl shadow-md hover:shadow-xl border border-base-content focus:border-base-content">
+            <div x-data="" class="flex !outline-none items-center pl-4 input rounded-xl">
                 <input type="text" class="grow" :placeholder="`Search ${modelList.length} model${modelList.length === 1?'':'s'}`" x-model="searchNeedle"/>
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" class="w-6 h-6 opacity-70" x-show="!searchNeedle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" class="w-6 h-6 opacity-70 hover:bg-gray-200 cursor-pointer rounded-full" x-show="searchNeedle" @click="searchNeedle = ''" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x-circle"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" class="w-6 h-6 opacity-60" x-show="!searchNeedle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" class="w-6 h-6 opacity-60 hover:opacity-100 cursor-pointer rounded-full" x-show="searchNeedle" @click="searchNeedle = ''" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x-circle"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
             </div>
         </div>
-        <div class="transition duration-500 ease-in-out shadow-md rounded-xl hover:shadow-xl">
+        <div class="transition duration-200 ease-in-out rounded-xl shadow-md hover:shadow-xl border border-base-content ">
             <div class="dropdown dropdown-end">
-                <button tabindex="0" role="button" class="btn-md btn-ghost rounded-xl p-3 font-medium text-black bg-gray-100">SORT</button>
-                <ul tabindex="0" class="dropdown-content z-[2] mt-1 menu shadow text-gray-800 bg-gray-100 rounded-box w-36">
-                    <div class="form-control">
-                        <label class="label cursor-pointer">
-                            <span class="label-text">model name</span> 
-                            <input type="radio" name="filter" class="radio" @click="sort('name')" checked />
-                        </label>
+                <div tabindex="0" role="button" class="flex btn-md btn-ghost pt-3 px-1 rounded-xl font-medium cursor-pointer">MENU</div>
+                <ul tabindex="0" class="dropdown-content z-[2] mt-1 menu shadow-2xl text-base-content bg-base-200 rounded-box w-40 border border-base-content">
+                    <div class="join join-vertical">
+                        <div class="form-control">
+                            <label class="label cursor-pointer text-left btn join-item">
+                                <span class="label-text">Model Name</span> 
+                                <input type="radio" name="filter" class="radio" value="name" @click="sort('name')" checked />
+                            </label>
+                        </div>
+                        <div class="form-control">
+                            <label class="label cursor-pointer text-left btn join-item">
+                                <span class="label-text">File Size</span> 
+                                <input type="radio" name="filter" class="radio" value="filesize" @click="sort('filesize')"/>
+                            </label>
+                        </div>
+                        <div class="form-control">
+                            <label class="label cursor-pointer text-left btn join-item">
+                                <span class="label-text">Parameter Size</span>
+                                <input type="radio" name="filter" class="radio" value="paramsize" @click="sort('paramsize')"/>
+                            </label>
+                        </div>
+                        <div class="form-control">
+                            <label class="label cursor-pointer text-left btn join-item">
+                                <span class="label-text">Last Parameter</span>
+                                <input type="radio" name="filter" class="radio" value="lastmod" @click="sort('lastmod')"/>
+                            </label>
+                        </div>
                     </div>
-                    <div class="form-control">
-                        <label class="label cursor-pointer">
-                            <span class="label-text">file size</span> 
-                            <input type="radio" name="filter" class="radio" @click="sort('filesize')"/>
-                        </label>
-                    </div>
-                    <div class="form-control">
-                        <label class="label cursor-pointer">
-                            <span class="label-text">parameter size</span>
-                            <input type="radio" name="filter" class="radio" @click="sort('paramsize')"/>
-                        </label>
-                    </div>
-                    <div class="form-control">
-                        <label class="label cursor-pointer">
-                            <span class="label-text">last modified</span>
-                            <input type="radio" name="filter" class="radio" @click="sort('lastmod')"/>
-                        </label>
+
+                    <div class="join join-vertical">
+                        <input type="radio" name="theme-buttons" class="btn theme-controller join-item" aria-label="System" value="system" id="system-theme"/>
+                        <input type="radio" name="theme-buttons" class="btn theme-controller join-item" aria-label="Light" value="light" id="light-theme"/>
+                        <input type="radio" name="theme-buttons" class="btn theme-controller join-item" aria-label="Dark" value="dark" id="dark-theme"/>
+                        <input type="radio" name="theme-buttons" class="btn theme-controller join-item" aria-label="Aqua" value="aqua" id="aqua-theme"/>
+                        <input type="radio" name="theme-buttons" class="btn theme-controller join-item" aria-label="Retro" value="retro" id="retro-theme"/>
+                        <input type="radio" name="theme-buttons" class="btn theme-controller join-item" aria-label="Black (OLED)" value="black" id="black-theme"/>
                     </div>
                 </ul>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('keydown', (event) => {
+        if (event.ctrlKey && event.keyCode === 75) {
+          event.preventDefault(); // Prevent browser default behavior
+          document.querySelector('input[type="text"]')?.focus(); // Focus the search input
+        } else if (event.keyCode === 27) {
+          document.querySelector('input[type="text"]')?.blur(); // Unfocus the search input on Esc key press
+        }
+    });
+    
+    let selectedTheme = localStorage.getItem('selectedTheme');
+
+    if (!selectedTheme) {
+        selectedTheme = 'system';
+        localStorage.setItem('selectedTheme', selectedTheme);
+    }
+    
+    applyTheme(selectedTheme);
+    
+    document.querySelectorAll('input[name="theme-buttons"]').forEach((radio) => {
+        radio.addEventListener('click', (event) => {
+            selectedTheme = event.target.value;
+            localStorage.setItem('selectedTheme', selectedTheme);
+            applyTheme(selectedTheme);
+        });
+    });
+    
+    function applyTheme(theme) {
+        if (theme === 'system') {
+            document.body.className = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'theme-dark' : 'theme-light';
+        } else {
+            document.body.className = `theme-${theme}`;
+        }
+        document.getElementById(`${selectedTheme}-theme`).checked = true;
+    }
+</script>

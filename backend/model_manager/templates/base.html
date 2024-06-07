@@ -2,17 +2,23 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en" class="bg-transparent">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>OllaMoMa</title>
 <script src="https://unpkg.com/alpinejs" defer></script>
 <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    rel="stylesheet"
+    type="text/css"
+/>
+<link
     href="https://cdn.jsdelivr.net/npm/daisyui@4.10.5/dist/full.min.css"
     rel="stylesheet"
     type="text/css"
 />
+{% comment %} <script src="https://cdn.jsdelivr.net/npm/theme-change@2.0.2/index.js"></script> {% endcomment %}
 <script src="https://cdn.tailwindcss.com"></script>
 <link class="" rel="icon" type="image/png" href="{% static 'icons/favicon-round.png' %}">
 <style>
@@ -25,12 +31,12 @@
     }
 
     .scrollbar-thin::-webkit-scrollbar-thumb {
-        background-color: #9fa3a7; /* gray-300 (inactive); */
+        background-color: bg-primary; /* use primary color */
         border-radius: 10px;
     }
 
     .scrollbar-thin:hover::-webkit-scrollbar-thumb {
-        background-color: #4b5563; /* gray-600 (active); */
+        background-color: bg-secondary; /* use secondary color */
         border-radius: 10px;
     }
 
@@ -38,12 +44,12 @@
         background-color: transparent; /* make the scrollbar track transparent */
     }
 </style>
+
+
 </head>
-<body class="max-h-full bg-gray-200" >
-    <div class="max-w-2xl px-4 py-2 mx-auto" @click="getStatus()">
+<body>
+    <div @click="getStatus()">
         {% block content %}{% endblock %}
     </div>
-
-
 </body>
 </html>

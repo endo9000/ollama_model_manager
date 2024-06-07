@@ -4,7 +4,7 @@
 {% load static %}
 {% csrf_token %}
 
-<div x-data="modelData">
+<div class="max-w-2xl p-2 mx-auto" x-data="modelData" >
     <div>{% include 'top-bar.html' %}</div>
     <div>{% include 'model-card.html'%}</div>
 </div>
@@ -15,8 +15,7 @@
 
 <footer>
     <div class="flex justify-center mt-2 text-center">
-        {% comment %} <img class="ml-1 w-6 h-6" src="{% static 'icons/power.svg' %}" alt="status"> {% endcomment %}
-        <div id="ollama_status">OLLAMA STATUS:</div>
+        <div id="ollama_status"></div>
     </div>
 </footer>
 <script>
@@ -29,16 +28,17 @@
                 window.ollama_failed = false;
                 window.location.reload();
             }
-            document.getElementById('ollama_status').style.color = data.status === 'Ollama is running' ? 'green' : 'red';
+            document.getElementById('ollama_status').classList.toggle('text-' + (data.status === 'Ollama is running' ? 'success' : 'error'), true);
             document.getElementById('ollama_status').innerText = 'STATUS: ' + data.status;
 
         }).catch(err => {
             window.ollama_failed = true;
-            document.getElementById('ollama_status').style.color = 'red';
+            document.getElementById('ollama_status').classList.add('text-error');
             document.getElementById('ollama_status').innerText = 'STATUS: Ollama is not running';
 
             if (maxRetries > 0) {
                 maxRetries--;
+                timer = 5;
                 displayTimer();
 
             } else {
