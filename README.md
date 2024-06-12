@@ -2,7 +2,8 @@
 
 a simple and minimalistic UI for managing Ollama models.
 
-### Install
+## Install
+### Native
 download/clone the git repository and open it.
 
     pip install -r requirements.txt
@@ -10,7 +11,19 @@ download/clone the git repository and open it.
     python .\manage.py runserver
 open [127.0.0.1:8000](127.0.0.1:8000) in your browser.
 
-### Implemented Features
+### Docker
+download/clone the git repository and build it.
+```sh
+git clone https://github.com/endo9000/OllaMoMa.git
+cd OllaMoMa
+docker build . -t ollamoma
+```
+Running:
+```sh
+docker run -p 8000:8000 --name ollamoma ollamoma
+```
+
+## Implemented Features
 - search bar
 - sort menu
 - edit model file (need indicator while saving)
@@ -19,10 +32,10 @@ open [127.0.0.1:8000](127.0.0.1:8000) in your browser.
 - delete model
 - darkreader compatibility (extension)
 
-### In Progress
+## In Progress
 - notifications 
 
-### Potential Features
+## Potential Features
 - menu bar
 - themes (darkmode)
 - docker
